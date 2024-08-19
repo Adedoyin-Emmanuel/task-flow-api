@@ -1,9 +1,10 @@
 <?php
 
 
-use App\Repositories;
-use Illuminate\Support\Str;
+namespace App\Repositories;
 use App\Models\Token;
+use Illuminate\Support\Str;
+use Exception;
 
 
 
@@ -18,7 +19,8 @@ class TokenRepository{
             Token::create([
                 'user_id' => $userId,
                 'type' => $tokenType,
-                'token' => $this->generateToken()
+                'token' => $this->generateToken(),
+                'expires_at' => now()->addHours(1)
             ]);
         } catch (Exception $exception) {
             throw $exception;

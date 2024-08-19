@@ -100,7 +100,7 @@ return [
             'handler' => StreamHandler::class,
             'formatter' => env('LOG_STDERR_FORMATTER'),
             'with' => [
-                'stream' => 'php://stderr',
+             'stream' => 'php://stdout',
             ],
             'processors' => [PsrLogMessageProcessor::class],
         ],
