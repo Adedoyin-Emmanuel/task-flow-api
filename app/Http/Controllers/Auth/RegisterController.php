@@ -44,13 +44,8 @@ class RegisterController extends Controller
         ]);
 
 
-        Log::debug($user->id);
-
-
         $token = $this->tokenRepository->createToken("email_verification", $user->id);
 
-        Log::debug($token);
-        
         $url = "http://localhost:8000/api/auth/verify-email?token=$token";
 
         $emailContent = "Please click the following link to verify your email address: $url";
