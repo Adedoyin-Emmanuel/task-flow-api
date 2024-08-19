@@ -2,8 +2,8 @@
 
 
 namespace App\Repositories;
-use App\Models\Token;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 use Exception;
 
 
@@ -24,6 +24,29 @@ class TokenRepository{
             ]);
 
             return $token->token;
+        } catch (Exception $exception) {
+            throw $exception;
+        }
+    }
+
+    public function findToken(string $tokenType, string $userId){
+        try {
+            return Token::where([
+                'user_id' => $userId,
+                'type' => $tokenType,
+                'expires_at' => '>=', now()
+            ])->first();
+        } catch (Exception $exception) {
+            throw $exception;
+        }
+    }
+
+
+
+    public function deleteToken(string $token){
+
+        try {
+            return Token::where('token', $token)->delete();
         } catch (Exception $exception) {
             throw $exception;
         }
