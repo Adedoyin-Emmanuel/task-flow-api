@@ -5,8 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 
 class Project extends Model
 {
@@ -18,6 +16,7 @@ class Project extends Model
         "name",
         "description",
         "start_date",
-        "end_date"
+        "end_date",
+        "status"
     ];
 }
