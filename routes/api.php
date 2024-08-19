@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\VerifyEmailController;
 
 
 
@@ -18,7 +18,7 @@ Route::get("/", function() {
 Route::group(['prefix' => 'auth'], function () {
 
     Route::post('register', [RegisterController::class, 'register']);
-    Route::get("/verify-email", [RegisterController::class, 'verifyEmail']);
+    Route::get("/verify-email", [VerifyEmailController::class, 'verify']);
     Route::post('login', [LoginController::class, 'login']);
 
 });

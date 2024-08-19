@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Repositories\TokenRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
 
 
@@ -21,12 +22,17 @@ class VerifyEmailController extends Controller
         }
 
 
-        public function verifyEmail(Request $request)
+        public function verify(Request $request)
         {
             $token = $request->token;
 
-            $tokenData = $this->tokenRepository->findToken("email_verification",$token);
+            Log::info($token);
 
+            $tokenData = $this->tokenRepository->findToken($token);
+
+
+
+            Log::info($tokenData);
             if (!$tokenData) {
                 return response()->json([
                     "success" => false,

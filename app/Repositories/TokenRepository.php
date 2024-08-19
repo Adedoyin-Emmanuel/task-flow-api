@@ -30,13 +30,11 @@ class TokenRepository{
         }
     }
 
-    public function findToken(string $tokenType, string $userId){
+    public function findToken(string $token){
         try {
-            return Token::where([
-                'user_id' => $userId,
-                'type' => $tokenType,
-                'expires_at' => '>=', now()
-            ])->first();
+
+            return Token::where('token', $token )->where('expires_at', '>', now())->first();
+
         } catch (Exception $exception) {
             throw $exception;
         }
