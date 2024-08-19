@@ -5,10 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-
 
 Route::get("/", function() {
     return response()->json([
@@ -21,5 +17,6 @@ Route::get("/", function() {
 Route::group(['prefix' => 'auth'], function () {
 
     Route::post('register', [RegisterController::class, 'register']);
+    //Route::post('login', [RegisterController::class, '']);
 
 });
