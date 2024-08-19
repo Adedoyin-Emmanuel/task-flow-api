@@ -17,14 +17,14 @@ class RegisterController extends Controller
      protected function register(Request $request)
      {
 
-        $validatedData = $request->validate(
-            [
-                "name" => ["required", "string", "max:255"],
-                "email" => ["required", "string", "email", "max:255", "unique:users"],
-                "password" => ["required", "string", "min:8", "max:20", "confirmed"],
-                "role" => ["required", "string", "in:user,project manager"]
-            ]
-        );
+        // $validatedData = $request->validate(
+        //     [
+        //         "name" => ["required", "string", "max:255"],
+        //         "email" => ["required", "string", "email", "max:255", "unique:users"],
+        //         "password" => ["required", "string", "min:8", "max:20", "confirmed"],
+        //         "role" => ["required", "string", "in:user,project manager"]
+        //     ]
+        // );
 
 
         try {
