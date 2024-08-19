@@ -16,12 +16,14 @@ class TokenRepository{
 
     public function createToken(string $tokenType, string $userId){
         try {
-            Token::create([
+            $token = Token::create([
                 'user_id' => $userId,
                 'type' => $tokenType,
                 'token' => $this->generateToken(),
                 'expires_at' => now()->addHours(1)
             ]);
+
+            return $token->token;
         } catch (Exception $exception) {
             throw $exception;
         }

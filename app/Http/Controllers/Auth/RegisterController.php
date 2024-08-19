@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Repositories\TokenRepository;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
+use Exception;
 
 class RegisterController extends Controller
 {
@@ -47,9 +48,12 @@ class RegisterController extends Controller
 
 
         $token = $this->tokenRepository->createToken("email_verification", $user->id);
-        $url = "http://localhost:8000/api/auth/verify-email" . $token;
 
-        $emailContent = "Please click the following link to verify your email address: " . $url;
+        Log::debug($token);
+        
+        $url = "http://localhost:8000/api/auth/verify-email?token=$token";
+
+        $emailContent = "Please click the following link to verify your email address: $url";
 
         Mail::raw($emailContent, function ($message) use ($user) {
             $message->to($user->email);
@@ -62,7 +66,7 @@ class RegisterController extends Controller
             "message" => "Registration successful. Please check your email for further instructions"
         ]);
 
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         return response()->json([
             'success' => false,
             'message' => $e->getMessage(),
