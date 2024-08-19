@@ -24,7 +24,7 @@ class RegisterController extends Controller
                 "role" => ["required", "string", "in:user,project manager"]
             ]
         );
-
+ 
 
         return response()->json([
             "success" => true,
