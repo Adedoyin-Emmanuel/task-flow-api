@@ -14,20 +14,10 @@ class Project extends Model
     use HasUuids;
 
 
-    public function up(){
-        Schema::create("projects", function (Blueprint $table) {
-            $table->uuid("id")->primary();
-            $table->string("name", 50);
-            $table->string("description", 5000);
-            $table->date("start_date");
-            $table->date("end_date");
-            $table->timestamps();
-
-        });
-
-    }
-
-    public function down(){
-        Schema::dropIfExists("projects");
-    }
+    protected $fillable = [
+        "name",
+        "description",
+        "start_date",
+        "end_date"
+    ];
 }
