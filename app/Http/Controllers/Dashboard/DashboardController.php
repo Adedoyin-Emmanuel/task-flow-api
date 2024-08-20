@@ -8,4 +8,20 @@ use Illuminate\Http\Request;
 class DashboardController extends Controller
 {
     //
+
+
+    public function overview()
+    {
+
+    }
+
+
+    public function overDueTasks()
+
+    {
+
+    }
+
+
+
 }
