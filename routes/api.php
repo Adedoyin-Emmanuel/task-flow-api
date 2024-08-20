@@ -27,10 +27,11 @@ Route::group(['prefix' => 'auth'], function () {
 
 
 Route::group(['prefix' => 'project', 'middleware' => ['auth']], function () {
-    Route::post('/', [ProjectController::class, 'create'])->middleware('role:admin');
+    Route::post('/', [ProjectController::class, 'create'])->middleware('role:admin,user');
     Route::get('/', [ProjectController::class, 'getAll']);
     Route::get('/{id}', [ProjectController::class, 'getById']);
     Route::put('/{id}', [ProjectController::class, 'update']);
+    Route::delete('/{id}', [ProjectController::class, 'delete']);
 });
 
 

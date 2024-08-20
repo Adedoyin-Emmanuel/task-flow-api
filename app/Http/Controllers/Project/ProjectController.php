@@ -49,6 +49,7 @@ class ProjectController extends Controller
             return response()->json([
                 "success" => true,
                 "message" => "All projects retrived successfully",
+                "totalProjects" => count($allProjects),
                 "data" => $allProjects
             ]);
 
