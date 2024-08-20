@@ -15,13 +15,22 @@ class ProjectController extends Controller
     {
         try {
 
-          $validatedData = $request->validate([
-            "name" => ["required", "string", "max:255"],
-            "description" => ["required", "string"],
-            "start_date" => ["required", "date"],
-            "end_date" => ["required", "date", new DateOrder($request->input('start_date'))],
-            "status" => ["required", "string", "in:pending,in progress,completed,overdue"]
-         ]);
+            $validatedData = $request->validate([
+                "name" => ["required", "string", "max:255"],
+                "description" => ["required", "string"],
+                "start_date" => ["required", "date"],
+                "end_date" => ["required", "date"],
+                "status" => ["optional", "string", "in:pending,in progress,completed,overdue"]
+            ]);
+
+
+            // Manually validate that end_date is after start_date
+            if (strtotime($validatedData["end_date"]) <= strtotime($validatedData["start_date"])) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'End date must be after start date.'
+                ], 422);
+            }
 
             // $project = Project::create([
             //     "name" => $validatedData["name"],
