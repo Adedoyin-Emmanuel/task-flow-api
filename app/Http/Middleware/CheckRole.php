@@ -36,7 +36,12 @@ class CheckRole
 
         $user = $this->userRepository->findUser($userId);
 
-        if(!$user->verified){
+        Log::info($user);
+
+
+        Log::info($user->role);
+
+        if($user->role !== $role){
             return response()->json([
                 'success' => false,
                 'message' => 'Access denied. Insufficient permission'

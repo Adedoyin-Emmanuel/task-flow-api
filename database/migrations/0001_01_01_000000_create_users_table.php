@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid("id")->primary();
             $table->string('name');
             $table->string('email')->unique();
-            $table->enum("role", ["user", "project manager"])->default("user");
+            $table->enum("role", ["user", "project manager", "team member"])->default("team member");
             $table->boolean("verified")->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
