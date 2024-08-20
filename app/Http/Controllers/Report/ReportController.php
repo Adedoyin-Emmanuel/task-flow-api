@@ -10,7 +10,7 @@ class ReportController extends Controller
 
 
 
-    public function generateProjectReport(Request $request)
+    public function generateProjectReport(Request $request, string $projectId)
     {
 
 
