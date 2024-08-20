@@ -46,4 +46,14 @@ class ProjectRepository
     {
         return Project::find($id);
     }
+
+
+     public function updateProject(string $id, array $data)
+    {
+        $project = Project::findOrFail($id);
+
+        $project->update($data);
+
+        return $project;
+    }
 }

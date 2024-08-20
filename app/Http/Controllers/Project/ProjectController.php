@@ -74,4 +74,32 @@ class ProjectController extends Controller
             return response()->json(['error' => $exception->getMessage()], 500);
         }
     }
+
+
+    public function update(Request $request, string $id)
+    {
+        try {
+            $validatedData = $request->validate([
+                "name" => ["sometimes", "string", "max:255"],
+                "description" => ["sometimes", "string"],
+                "start_date" => ["sometimes", "date"],
+                "end_date" => ["sometimes", "date"],
+                "status" => ["nullable", "string", "in:pending,in progress,completed,overdue"]
+            ]);
+
+            $project = $this->projectRepository->updateProject($id, $validatedData);
+
+            return response()->json([
+                "success" => true,
+                "message" => "Project updated successfully",
+                "data" => $project
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+
+
+
 }

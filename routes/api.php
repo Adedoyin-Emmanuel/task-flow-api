@@ -8,10 +8,7 @@ use App\Http\Controllers\Project\ProjectController;
 
 use App\Http\Middleware\CheckAuth;
 use App\Http\Middleware\CheckRole;
-
-
-
-
+use App\Models\Project;
 
 Route::get("/", function () {
     return response()->json([
@@ -33,6 +30,7 @@ Route::group(['prefix' => 'project', 'middleware' => ['auth']], function () {
     Route::post('/', [ProjectController::class, 'create'])->middleware('role:admin');
     Route::get('/', [ProjectController::class, 'getAll']);
     Route::get('/{id}', [ProjectController::class, 'getById']);
+    Route::put('/{id}', [ProjectController::class, 'update']);
 });
 
 
