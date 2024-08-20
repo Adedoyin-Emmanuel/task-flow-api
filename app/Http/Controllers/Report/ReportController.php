@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers\Report;
 
-use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Repositories\ProjectRepository;
+use App\Repositories\TaskRepository;
+
+
 
 class ReportController extends Controller
 {
