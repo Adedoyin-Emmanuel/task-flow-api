@@ -63,4 +63,10 @@ class TaskRepository
     public function deleteTask(string $id){
         return Task::destroy($id);
     }
+
+
+    public function getTasksByProjectId($projectId)
+    {
+        return Task::where('project_id', $projectId)->get();
+    }
 }
