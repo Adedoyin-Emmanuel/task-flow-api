@@ -11,7 +11,7 @@
     <ul>
         <li><strong>Task:</strong> {{ $task->title }}</li>
         <li><strong>Description:</strong> {{ $task->description }}</li>
-        <li><strong>Deadline:</strong> {{ \Carbon\Carbon::parse($task->end_date)->format('M d, Y') }}</li>
+        <li><strong>Deadline:</strong> {{ date('M d, Y', strtotime($task->end_date)) }}</li>
     </ul>
     <p>Please ensure the task is completed on time.</p>
     <p>Thank you!</p>
