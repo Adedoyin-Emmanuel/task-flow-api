@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Task;
 use Exception;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Repositories\TaskRepository;
 use App\Repositories\UserRepository;
@@ -195,13 +196,14 @@ class TaskController extends Controller
                 "status" => ["required", "string", "in:pending,in progress,completed,overdue"]
             ]);
 
+            $task->status = $validatedData["status"];
 
-            $updatedTask = $this->taskRepository->updateTask($id, $validatedData);
+            $task->save();
 
             return response()->json([
                 "success" => true,
                 "message" => "Task status updated successfully",
-                "data" => $updatedTask->status
+                "data" => ["status" => $task->status]
             ]);
 
         } catch (Exception $exception) {

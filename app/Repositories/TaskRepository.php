@@ -2,8 +2,9 @@
 
 namespace App\Repositories;
 
-use App\Models\Task;
 use Exception;
+use App\Models\Task;
+use Illuminate\Support\Facades\Log;
 
 class TaskRepository
 {
@@ -53,7 +54,7 @@ class TaskRepository
      public function updateTask(string $id, array $data)
     {
         $task = Task::findOrFail($id);
-
+        
         $task->update($data);
 
         return $task;
