@@ -31,6 +31,11 @@ class ProjectRepository
         return $project;
     }
 
+
+    public function getAllProjects(){
+        return Project::all();
+    }
+
     /**
      * Find a project by ID.
      *

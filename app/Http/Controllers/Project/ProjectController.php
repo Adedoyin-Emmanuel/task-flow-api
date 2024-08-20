@@ -38,4 +38,22 @@ class ProjectController extends Controller
             return response()->json(['error' => $exception->getMessage()], 500);
         }
     }
+
+
+    public function getAll(Request $request){
+
+        try {
+            
+            $allProjects = $this->projectRepository->getAllProjects();
+
+            return response()->json([
+                "success" => true,
+                "message" => "All projects retrived successfully",
+                "data" => $allProjects
+            ]);
+
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
 }
