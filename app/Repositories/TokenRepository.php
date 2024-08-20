@@ -33,6 +33,7 @@ class TokenRepository{
 
         public function createAuthenticationToken(string $userId){
         try {
+            Token::where(['user_id' => $userId, 'type' => 'auth_token'])->delete();
             $token = Token::create([
                 'user_id' => $userId,
                 'type' => "auth_token",
