@@ -56,4 +56,9 @@ class ProjectRepository
 
         return $project;
     }
+
+
+    public function deleteProject(string $id){
+        Project::destroy($id);
+    }
 }

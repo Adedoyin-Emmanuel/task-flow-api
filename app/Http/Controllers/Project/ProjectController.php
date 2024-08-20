@@ -97,8 +97,27 @@ class ProjectController extends Controller
         } catch (Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);
         }
+
     }
 
+
+    public function delete(Request $request, string $id)
+    {
+
+          try {
+
+            $this->projectRepository->deleteProject($id);
+
+            return response()->json([
+                "success" => true,
+                "message" => "Project deleted successfully",
+                "data" => null
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+
+    }
 
 
 
