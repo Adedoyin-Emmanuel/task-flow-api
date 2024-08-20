@@ -4,11 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Task\TaskController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Report\ReportController;
 use App\Http\Controllers\Project\ProjectController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Dashboard\DashboardController;
 
-Route::get("/", function () {
+Route::get('/', function () {
     return response()->json([
         "success" => true,
         "message" => "Welcome to Task Flow API"
@@ -47,3 +48,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
     Route::get('/overdue', [DashboardController::class, 'overdueTasks']);
 });
 
+
+Route::group(['prefix' => 'report', 'middleware' => ['auth']], function () {
+    Route::get('/project/{projectId}', [ReportController::class, 'generateProjectReport']);
+    Route::get('/all-projects', [ReportController::class, 'generateAllProjectsReport']);
+});
