@@ -42,7 +42,7 @@ class ProjectRepository
      * @param string $id
      * @return \App\Models\Project|null
      */
-    public function findProjectById(string $id): ?Project
+    public function getProjectById(string $id): ?Project
     {
         return Project::find($id);
     }

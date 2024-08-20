@@ -43,13 +43,31 @@ class ProjectController extends Controller
     public function getAll(Request $request){
 
         try {
-            
+
             $allProjects = $this->projectRepository->getAllProjects();
 
             return response()->json([
                 "success" => true,
                 "message" => "All projects retrived successfully",
                 "data" => $allProjects
+            ]);
+
+        } catch (Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+
+    public function getById(Request $request, string $id){
+       try {
+
+
+            $project = $this->projectRepository->getProjectById($id);
+
+            return response()->json([
+                "success" => true,
+                "message" => "Project retrived successfully",
+                "data" => $project
             ]);
 
         } catch (Exception $exception) {
