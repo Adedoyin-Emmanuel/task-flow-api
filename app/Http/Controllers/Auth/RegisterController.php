@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use App\Repositories\TokenRepository;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Log;
 use Exception;
 
 class RegisterController extends Controller
@@ -70,11 +69,5 @@ class RegisterController extends Controller
     }
 
  }
-
-
-
-
-
-
-
+ 
 }
