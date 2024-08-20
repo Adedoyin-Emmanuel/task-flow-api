@@ -10,13 +10,13 @@ class DashboardController extends Controller
     //
 
 
-    public function overview()
+    public function overview(Request $request)
     {
 
     }
 
 
-    public function overDueTasks()
+    public function overDueTasks(Request $request)
 
     {
 
