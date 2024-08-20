@@ -40,6 +40,9 @@ Route::group(['prefix' => 'task', 'middleware' => ['auth']], function(){
     Route::get('/{id}', [TaskController::class, 'getById']);
     Route::put('/{id}', [TaskController::class, 'update']);
     Route::delete('/{id}', [TaskController::class, 'delete'])->middleware('role:project manager,admin');
+
+    Route::put('/{id}/change-status', [TaskController::class, 'changeTaskStatus']);
+    Route::put('/{id}/change-assignee', [TaskController::class, 'changeAssignee'])->middleware('role:admin,project manager');
 });
 
 

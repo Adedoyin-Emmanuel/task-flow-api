@@ -142,11 +142,11 @@ class TaskController extends Controller
     }
 
 
-    public function changeAssignee(Request $request, string $taskId)
+    public function changeAssignee(Request $request, string $id)
     {
         try {
 
-            $task = $this->taskRepository->getTaskById($taskId);
+            $task = $this->taskRepository->getTaskById($id);
             if (!$task) {
                 return response()->json([
                     "success" => false,
@@ -158,7 +158,7 @@ class TaskController extends Controller
                 "assignee" => ["required", "string"],
             ]);
 
-            $updatedTask = $this->taskRepository->updateTask($taskId, $validatedData);
+            $updatedTask = $this->taskRepository->updateTask($id, $validatedData);
 
             if($task->assignee !== $validatedData["assignee"]){
 
@@ -179,11 +179,11 @@ class TaskController extends Controller
     }
 
 
-    public function changeTaskStatus(Request $request, string $taskId)
+    public function changeTaskStatus(Request $request, string $id)
     {
           try {
 
-            $task = $this->taskRepository->getTaskById($taskId);
+            $task = $this->taskRepository->getTaskById($id);
             if (!$task) {
                 return response()->json([
                     "success" => false,
@@ -196,7 +196,7 @@ class TaskController extends Controller
             ]);
 
 
-            $updatedTask = $this->taskRepository->updateTask($taskId, $validatedData);
+            $updatedTask = $this->taskRepository->updateTask($id, $validatedData);
 
             return response()->json([
                 "success" => true,
