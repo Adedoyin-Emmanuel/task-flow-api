@@ -31,7 +31,7 @@ class RegisterController extends Controller
                 "name" => ["required", "string", "max:255"],
                 "email" => ["required", "string", "email", "max:255", "unique:users"],
                 "password" => ["required", "string", "min:8", "max:20"],
-                "role" => ["required", "string", "in:user,project manager"]
+                "role" => ["required", "string", "in:team member,project manager, admin"]
             ]
         );
 
@@ -69,5 +69,5 @@ class RegisterController extends Controller
     }
 
  }
- 
+
 }
