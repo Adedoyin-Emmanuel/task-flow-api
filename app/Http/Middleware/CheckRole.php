@@ -42,7 +42,7 @@ class CheckRole
         }
 
         $userId = $dbToken->user_id;
-        $user = $this->userRepository->findUser($userId);
+        $user = $this->userRepository->getUser($userId);
 
         if (!$user) {
             return response()->json([

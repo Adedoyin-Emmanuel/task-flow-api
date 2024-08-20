@@ -35,7 +35,7 @@ class ProjectController extends Controller
                 "data" => $project
             ]);
         } catch (Exception $exception) {
-            return response()->json(['error' => $exception->getMessage()], 500);
+            return response()->json(["success" => false, "message" => $exception->getMessage()], 500);
         }
     }
 
@@ -49,19 +49,18 @@ class ProjectController extends Controller
             return response()->json([
                 "success" => true,
                 "message" => "All projects retrived successfully",
-                "totalProjects" => count($allProjects),
+                "total_projects" => count($allProjects),
                 "data" => $allProjects
             ]);
 
         } catch (Exception $exception) {
-            return response()->json(['error' => $exception->getMessage()], 500);
+            return response()->json(["success" => false, "message" => $exception->getMessage()], 500);
         }
     }
 
 
     public function getById(Request $request, string $id){
        try {
-
 
             $project = $this->projectRepository->getProjectById($id);
 
@@ -81,7 +80,7 @@ class ProjectController extends Controller
             ]);
 
         } catch (Exception $exception) {
-            return response()->json(['error' => $exception->getMessage()], 500);
+            return response()->json(["success" => false, "message" => $exception->getMessage()], 500);
         }
     }
 
@@ -105,7 +104,7 @@ class ProjectController extends Controller
                 "data" => $project
             ]);
         } catch (Exception $exception) {
-            return response()->json(['error' => $exception->getMessage()], 500);
+            return response()->json(["success" => false, "message" => $exception->getMessage()], 500);
         }
 
     }
@@ -123,7 +122,7 @@ class ProjectController extends Controller
                 "data" => null
             ]);
         } catch (Exception $exception) {
-            return response()->json(['error' => $exception->getMessage()], 500);
+            return response()->json(["success" => false, "message" => $exception->getMessage()], 500);
         }
 
     }

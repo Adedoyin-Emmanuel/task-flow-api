@@ -37,7 +37,7 @@ class ProjectRepository
     }
 
     /**
-     * Find a project by ID.
+     * Find a project by ID.w
      *
      * @param string $id
      * @return \App\Models\Project|null

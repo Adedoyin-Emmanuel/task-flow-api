@@ -10,7 +10,7 @@ use Exception;
 class UserRepository
 {
 
-    public function findUser(string $id){
+    public function getUser(string $id){
 
         try {
             return User::find($id);
