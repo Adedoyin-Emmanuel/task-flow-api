@@ -69,4 +69,8 @@ class TaskRepository
     {
         return Task::where('project_id', $projectId)->get();
     }
+
+    public function getOverdueTasks(){
+        return Task::where('end_date', '<', now())->get();
+    }
 }
