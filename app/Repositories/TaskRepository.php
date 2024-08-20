@@ -70,7 +70,16 @@ class TaskRepository
         return Task::where('project_id', $projectId)->get();
     }
 
-    public function getOverdueTasks(){
-        return Task::where('end_date', '<', now())->get();
+    public function getOverdueTasks(?string $status = null)
+    {
+        $query = Task::where('end_date', '<', now());
+
+        if ($status) {
+            $query->where('status', $status);
+        } else {
+            $query->where('status', '!=', 'completed');
+        }
+
+        return $query->get();
     }
 }
