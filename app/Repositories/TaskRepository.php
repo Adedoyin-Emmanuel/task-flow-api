@@ -45,7 +45,7 @@ class TaskRepository
      * @param string $id
      * @return \App\Models\Project|null
      */
-    public function getTaskById(string $id): ?Task
+    public function getTaskById(string $id)
     {
         return Task::find($id);
     }
@@ -54,7 +54,7 @@ class TaskRepository
      public function updateTask(string $id, array $data)
     {
         $task = Task::findOrFail($id);
-        
+
         $task->update($data);
 
         return $task;
