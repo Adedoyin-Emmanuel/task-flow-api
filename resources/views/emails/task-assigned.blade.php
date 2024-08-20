@@ -6,6 +6,12 @@
 <body>
     <h1>You have a new task assigned: {{ $task->title }}</h1>
     <p>Details: {{ $task->description }}</p>
-    <p>Deadline: {{ $task->end_date->format('M d, Y') }}</p>
+
+    @php
+        $endDate = new \DateTime($task->end_date);
+        $formattedDate = $endDate->format('M d, Y');
+    @endphp
+
+    <p>Deadline: {{ $formattedDate }}</p>
 </body>
 </html>

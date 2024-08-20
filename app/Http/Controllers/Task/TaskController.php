@@ -49,8 +49,8 @@ class TaskController extends Controller
 
     protected function sendTaskNotification($task, $message)
     {
-        $assigneeEmail = $task->assignee->email;
-        Mail::to($assigneeEmail)->send(new TaskAssignedNotification($task, $message));
+        $userEmail = $this->userRepository->getUser($task->assignee);
+        Mail::to($userEmail)->send(new TaskAssignedNotification($task, $message));
     }
 
 
@@ -156,22 +156,22 @@ class TaskController extends Controller
             }
 
             $validatedData = $request->validate([
-                "assignee" => ["required", "string"],
+                "assignee" => ["required", "string", ],
             ]);
 
-            if($task->assignee !== $validatedData["assignee"]){
 
+            if(!$task->assignee !== $validatedData["assignee"]){
                 $this->sendTaskNotification($task, "You've been assigned a task");
+                $task->assignee = $validatedData["assignee"];
+                $task->save();
             }
 
-            $task->assignee = $validatedData["assignee"];
 
-            $task->save();
 
             return response()->json([
                     "success" => true,
                     "message" => "Assignee updated successfully",
-                    "data" => $task->assignee
+                    "data" => ["assignee" => $task->assignee]
             ], 404);
 
 
