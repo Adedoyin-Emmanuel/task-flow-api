@@ -38,7 +38,7 @@ class CheckAuth
         $dbToken = $this->tokenRepository->findToken($token);
 
         if(!$dbToken){
-             return response()->json(['success' => false, 'message' => 'Unauthorizedd. Invalid or expired token'], 401);
+             return response()->json(['success' => false, 'message' => 'Unauthorized. Invalid or expired token'], 401);
         }
 
 

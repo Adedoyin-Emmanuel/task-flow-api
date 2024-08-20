@@ -61,6 +61,6 @@ class TaskRepository
 
 
     public function deleteTask(string $id){
-        Task::destroy($id);
+        return Task::destroy($id);
     }
 }

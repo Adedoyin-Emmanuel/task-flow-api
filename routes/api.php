@@ -32,12 +32,12 @@ Route::group(['prefix' => 'project', 'middleware' => ['auth']], function () {
 });
 
 
-Route::group(['prefix' => 'task', 'middlerware' => ['auth']], function(){
-    Route::post('/', [TaskController::class, 'create'])->middleware('role:project manager, admin');
+Route::group(['prefix' => 'task', 'middleware' => ['auth']], function(){
+    Route::post('/', [TaskController::class, 'create'])->middleware('role:project manager,admin');
     Route::get('/', [TaskController::class, 'getAll']);
     Route::get('/{id}', [TaskController::class, 'getById']);
     Route::put('/{id}', [TaskController::class, 'update']);
-    Route::delete('/{id}', [TaskController::class, 'delete'])->middleware('role:project manager, admin');
+    Route::delete('/{id}', [TaskController::class, 'delete'])->middleware('role:project manager,admin');
 });
 
 

@@ -43,6 +43,11 @@ class TaskController extends Controller
 
             $task = $this->taskRepository->createTask($validatedData);
             $user = $this->userRepository->getUser($task->assignee);
+
+            // if($user->role !== "team member"){
+            //     return response()->json(["success" => false, "message" => "Only team members can be assigned tasks"], 403);
+            // }
+
             $project = $this->projectRepository->getProjectById($task->project_id);
 
 
@@ -124,6 +129,14 @@ class TaskController extends Controller
 
             $task = $this->taskRepository->updateTask($id, $validatedData);
 
+
+            if(!$task){
+                return response()->json([
+                    "success" => false,
+                    "message" => "Task with given id not found"
+                ], 404);
+            }
+
             return response()->json([
                 "success" => true,
                 "message" => "Task updated successfully",
@@ -137,10 +150,19 @@ class TaskController extends Controller
     }
 
 
-    public function delete(Request $request)
+    public function delete(Request $request, string $id)
+
     {
         try {
-            $this->taskRepository->deleteTask($request->input('id'));
+
+            $task = $this->taskRepository->deleteTask($id);
+
+            if(!$task){
+                return response()->json([
+                    "success" => false,
+                    "message" => "Task with given id not found"
+                ], 404);
+            }
 
             return response()->json([
                 "success" => true,
