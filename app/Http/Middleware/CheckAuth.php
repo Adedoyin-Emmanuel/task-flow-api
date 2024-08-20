@@ -5,9 +5,19 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use App\Repositories\TokenRepository;
+
+
 
 class CheckAuth
 {
+    protected $tokenRepository;
+
+    public function __construct(TokenRepository $tokenRepository){
+        $this->tokenRepository = $tokenRepository;
+    }
+
     /**
      * Handle an incoming request.
      *
@@ -17,10 +27,19 @@ class CheckAuth
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!Auth::check()) {
-            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+
+        $token = $request->cookie("auth_token");
+
+        if(!$token){
+            return response()->json(['success' => false, 'message' => 'Unauthorized. Invalid or expired token'], 401);
         }
 
+        $dbToken = $this->tokenRepository->findToken($token);
+
+        if(!$dbToken){
+             return response()->json(['success' => false, 'message' => 'Unauthorizedd. Invalid or expired token'], 401);
+        }
+        
         return $next($request);
     }
 }

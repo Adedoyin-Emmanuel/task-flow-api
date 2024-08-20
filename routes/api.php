@@ -6,6 +6,11 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Project\ProjectController;
 
+use App\Http\Middleware\CheckAuth;
+use App\Http\Middleware\CheckRole;
+
+
+
 
 
 Route::get("/", function () {
@@ -23,6 +28,10 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 
-Route::group(['prefix' => 'project'], function () {
+
+Route::group(['prefix' => 'project', 'middleware' => [CheckAuth::class]], function () {
     Route::post('/', [ProjectController::class, 'create']);
 });
+
+
+
