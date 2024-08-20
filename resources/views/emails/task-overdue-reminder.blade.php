@@ -5,11 +5,11 @@
 </head>
 <body>
     <h1>Task Overdue Notification</h1>
-    <p>Dear {{ $task->assignedUser->name }},</p>
-    <p>The task "{{ $task->title }}" is overdue.</p>
+    <p>Dear {{ $task->assignee }},</p>
+    <p>The task "{{ $task->name }}" is overdue.</p>
     <p>Details:</p>
     <ul>
-        <li><strong>Task:</strong> {{ $task->title }}</li>
+        <li><strong>Task:</strong> {{ $task->name }}</li>
         <li><strong>Description:</strong> {{ $task->description }}</li>
         <li><strong>Deadline:</strong> {{ date('M d, Y', strtotime($task->end_date)) }}</li>
     </ul>
