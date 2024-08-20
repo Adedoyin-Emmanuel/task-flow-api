@@ -44,7 +44,7 @@ class RegisterController extends Controller
         ]);
 
 
-        $token = $this->tokenRepository->createToken("email_verification", $user->id);
+        $token = $this->tokenRepository->createVerificationToken($user->id);
 
         $url = "http://localhost:8000/api/auth/verify-email?token=$token";
 

@@ -19,6 +19,6 @@ Route::group(['prefix' => 'auth'], function () {
 
     Route::post('register', [RegisterController::class, 'register']);
     Route::get("/verify-email", [VerifyEmailController::class, 'verify']);
-    Route::post('login', [LoginController::class, 'login']);
+    Route::post('/login', [LoginController::class, 'login']);
 
 });

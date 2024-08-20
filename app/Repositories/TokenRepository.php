@@ -15,11 +15,11 @@ class TokenRepository{
         return Str::random(60);
     }
 
-    public function createToken(string $tokenType, string $userId){
+    public function createVerificationToken(string $userId, ){
         try {
             $token = Token::create([
                 'user_id' => $userId,
-                'type' => $tokenType,
+                'type' => "auth_token",
                 'token' => $this->generateToken(),
                 'expires_at' => now()->addHours(1)
             ]);
@@ -30,11 +30,29 @@ class TokenRepository{
         }
     }
 
+
+        public function createAuthenticationToken(string $userId){
+        try {
+            $token = Token::create([
+                'user_id' => $userId,
+                'type' => "auth_token",
+                'token' => $this->generateToken(),
+                'expires_at' => now()->days(7)
+            ]);
+
+            return $token->token;
+        } catch (Exception $exception) {
+            throw $exception;
+        }
+    }
+
+
+
+
+
     public function findToken(string $token){
         try {
-
             return Token::where('token', $token )->where('expires_at', '>', now())->first();
-
         } catch (Exception $exception) {
             throw $exception;
         }
@@ -43,7 +61,6 @@ class TokenRepository{
 
 
     public function deleteToken(string $token){
-
         try {
             return Token::where('token', $token)->delete();
         } catch (Exception $exception) {
