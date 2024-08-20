@@ -3,51 +3,39 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class TaskDeadlineReminder extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $task;
+    public $message;
+
     /**
      * Create a new message instance.
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
-    {
-        return new Envelope(
-            subject: 'Task Deadline Reminder',
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        return new Content(
-            view: 'view.name',
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
      *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+     * @param $task
+     * @param string $message
      */
-    public function attachments(): array
+    public function __construct($task, string $message = 'Task Deadline Reminder')
     {
-        return [];
+        $this->task = $task;
+        $this->message = $message;
+    }
+
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
+    public function build()
+    {
+        return $this->subject($this->message)
+                    ->view('emails.task-deadline-reminder')
+                    ->with([
+                        'task' => $this->task,
+                    ]);
     }
 }
