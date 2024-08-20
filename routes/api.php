@@ -29,8 +29,8 @@ Route::group(['prefix' => 'auth'], function () {
 
 
 
-Route::group(['prefix' => 'project', 'middleware' => [CheckAuth::class]], function () {
-    Route::post('/', [ProjectController::class, 'create']);
+Route::group(['prefix' => 'project', 'middleware' => ['auth']], function () {
+    Route::post('/', [ProjectController::class, 'create'])->middleware('role:admin');
 });
 
 

@@ -28,6 +28,7 @@ class CheckAuth
     public function handle(Request $request, Closure $next)
     {
 
+
         $token = $request->cookie("auth_token");
 
         if(!$token){
@@ -39,7 +40,10 @@ class CheckAuth
         if(!$dbToken){
              return response()->json(['success' => false, 'message' => 'Unauthorizedd. Invalid or expired token'], 401);
         }
-        
+
+
+        Log::info('CheckAuth passed');
+
         return $next($request);
     }
 }

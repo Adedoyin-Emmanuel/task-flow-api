@@ -4,26 +4,45 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Log;
-
+use App\Repositories\TokenRepository;
+use App\Repositories\UserRepository;
 
 class CheckRole
 {
+
+    protected $tokenRepository;
+    protected $userRepository;
+
+    public function __construct(TokenRepository $tokenRepository, UserRepository $userRepository){
+        $this->tokenRepository = $tokenRepository;
+        $this->userRepository = $userRepository;
+    }
+
     /**
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-   public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, string $role): Response
     {
-        $user = Auth::user();
 
-        if ($user->role !== 'Project Manager') {
-            return response()->json(['success' => false, 'message' => 'Forbidden'], 403);
+        $token = $request->cookie("auth_token");
+
+        $dbToken = $this->tokenRepository->findToken($token);
+
+        $userId = $dbToken->user_id;
+
+        $user = $this->userRepository->findUser($userId);
+
+        if(!$user->verified){
+            return response()->json([
+                'success' => false,
+                'message' => 'Access denied. Insufficient permission'
+            ], 403);
         }
 
         return $next($request);
     }
-
 }
