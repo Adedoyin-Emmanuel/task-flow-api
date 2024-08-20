@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Report;
 use Exception;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Repositories\TaskRepository;
 use App\Repositories\ProjectRepository;
@@ -27,15 +28,12 @@ class ReportController extends Controller
 
     public function generateProjectReport(Request $request, string $projectId)
     {
-
         $project = $this->projectRepository->getProjectById($projectId);
-        $tasks =  $this->taskRepository->getTaskById($projectId);
-
+        $tasks =  $this->taskRepository->getTasksByProjectId($projectId);
 
         $completedTasks = $tasks->where('status', 'completed')->count();
         $pendingTasks = $tasks->where('status', 'pending')->count();
         $overdueTasks = $tasks->where('status', 'overdue')->count();
-
 
         $data = [
             'project' => $project,
@@ -44,11 +42,8 @@ class ReportController extends Controller
             'overdueTasks' => $overdueTasks,
         ];
 
-
         $pdf = PDF::loadView('reports.project', $data);
-
         return $pdf->download("project_{$project->id}_report.pdf");
-
     }
 
 
@@ -60,7 +55,7 @@ class ReportController extends Controller
 
 
         foreach($projects as $project) {
-            $tasks =  $this->taskRepository->getTaskById($project->id);
+            $tasks = $this->taskRepository->getTasksByProjectId($project->id);
 
             $completedTasks = $tasks->where('status', 'completed')->count();
             $pendingTasks = $tasks->where('status', 'pending')->count();

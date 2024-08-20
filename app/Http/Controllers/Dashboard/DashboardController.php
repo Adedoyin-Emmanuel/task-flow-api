@@ -68,8 +68,9 @@ class DashboardController extends Controller
             $overdueTasks = $this->taskRepository->getOverdueTasks($status);
 
             return response()->json([
-                'success' => true,
-                'data' => $overdueTasks,
+                "success" => true,
+                "mesage" => "",
+                "data" => $overdueTasks,
             ]);
 
        } catch (Exception $exception) {

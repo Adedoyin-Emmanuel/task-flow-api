@@ -49,7 +49,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 });
 
 
-Route::group(['prefix' => 'report', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'report'], function () {
     Route::get('/project/{projectId}', [ReportController::class, 'generateProjectReport']);
     Route::get('/all-projects', [ReportController::class, 'generateAllProjectsReport']);
 });
