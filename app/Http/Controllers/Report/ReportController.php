@@ -55,5 +55,33 @@ class ReportController extends Controller
     public function generateAllProjectsReport(Request $request)
     {
 
+        $projects = $this->projectRepository->getAllProjects();
+        $projectSummaries = [];
+
+
+        foreach($projects as $project) {
+            $tasks =  $this->taskRepository->getTaskById($project->id);
+
+            $completedTasks = $tasks->where('status', 'completed')->count();
+            $pendingTasks = $tasks->where('status', 'pending')->count();
+            $overdueTasks = $tasks->where('status', 'overdue')->count();
+
+            $projectSummaries[] = [
+                'project' => $project,
+                'completedTasks' => $completedTasks,
+                'pendingTasks' => $pendingTasks,
+                'overdueTasks' => $overdueTasks,
+            ];
+        }
+
+
+
+        $data = [
+            'projects' => $projectSummaries,
+        ];
+
+        $pdf = PDF::loadView('reports.all-projects', $data);
+        return $pdf->download("all_projects_report.pdf");
+
     }
 }
