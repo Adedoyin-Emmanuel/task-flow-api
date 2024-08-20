@@ -26,38 +26,55 @@ class DashboardController extends Controller
 
     public function overview(Request $request)
     {
+        try {
 
-        $projects = $this->projectRepository->getAllProjects();
-        $overview = [];
+            $projects = $this->projectRepository->getAllProjects();
+            $overview = [];
 
 
-        foreach($projects as $project)
-        {
-            $tasks = $this->taskRepository->getTasksByProjectId($project->id);
-            $totalTasks = $tasks->count();
-            $completedTasks = $tasks->where('status', 'completed')->count();
-            $progress = $totalTasks > 0 ? ($completedTasks / $totalTasks) * 100 : 0;
+            foreach($projects as $project)
+            {
+                $tasks = $this->taskRepository->getTasksByProjectId($project->id);
+                $totalTasks = $tasks->count();
+                $completedTasks = $tasks->where('status', 'completed')->count();
+                $progress = $totalTasks > 0 ? ($completedTasks / $totalTasks) * 100 : 0;
 
-            $overview[] = [
-                "project" => $project,
-                "total_tasks" => $totalTasks,
-                "completed_tasks" => $completedTasks,
-                "progress" => $progress,
-            ];
+                $overview[] = [
+                    "project" => $project,
+                    "total_tasks" => $totalTasks,
+                    "completed_tasks" => $completedTasks,
+                    "progress" => $progress,
+                ];
 
+            }
+
+            return response()->json([
+                "success" => true,
+                "data" => $overview,
+            ]);
+
+        } catch (Exception $exception) {
+             return response()->json(["success" => false, "message" => $exception->getMessage()], 500);
         }
-
-        return response()->json([
-            "success" => true,
-            "data" => $overview,
-        ]);
 
     }
 
 
     public function overDueTasks(Request $request)
     {
+       try {
+        
+            $status = $request->query("status", null);
+            $overdueTasks = $this->taskRepository->getOverdueTasks($status);
 
+            return response()->json([
+                'success' => true,
+                'data' => $overdueTasks,
+            ]);
+
+       } catch (Exception $exception) {
+            return response()->json(["success" => false, "message" => $exception->getMessage()], 500);
+       }
     }
 
 
