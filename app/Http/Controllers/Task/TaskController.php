@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Task;
 
 use Exception;
+use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Repositories\ProjectRepository;
 use App\Repositories\TaskRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\TaskAssignedNotification;
+use App\Repositories\ProjectRepository;
 
 
 class TaskController extends Controller
@@ -25,6 +27,31 @@ class TaskController extends Controller
         $this->userRepository = $userRepository;
         $this->projectRepository = $projectRepository;
     }
+
+
+
+    protected function canStartTask(string $userId, string $projectId)
+    {
+
+        $userTasks = $this->taskRepository->getUserProjectTasks($userId, $projectId);
+
+        foreach($userTasks as $userTask)
+        {
+            if($userTask->status !== 'completed')
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    protected function sendTaskNotification(Task $task, $message)
+    {
+        $assigneeEmail = $task->assignee->email;
+        Mail::to($assigneeEmail)->send(new TaskAssignedNotification($task, $message));
+    }
+
 
 
     public function create(Request $request)
@@ -115,6 +142,74 @@ class TaskController extends Controller
     }
 
 
+    public function changeAssignee(Request $request, string $taskId)
+    {
+        try {
+
+            $task = $this->taskRepository->getTaskById($taskId);
+            if (!$task) {
+                return response()->json([
+                    "success" => false,
+                    "message" => "Task with the given ID not found"
+                ], 404);
+            }
+
+            $validatedData = $request->validate([
+                "assignee" => ["required", "string"],
+            ]);
+
+            $updatedTask = $this->taskRepository->updateTask($taskId, $validatedData);
+
+            if($task->assignee !== $validatedData["assignee"]){
+
+                $this->sendTaskNotification($updatedTask, "You've been assigned a task");
+            }
+
+
+            return response()->json([
+                    "success" => true,
+                    "message" => "Assignee updated successfully",
+                    "data" => $updatedTask->assignee
+            ], 404);
+
+
+        } catch (Exception $exception) {
+            return response()->json(["success" => false, "message" => $exception->getMessage()], 500);
+        }
+    }
+
+
+    public function changeTaskStatus(Request $request, string $taskId)
+    {
+          try {
+
+            $task = $this->taskRepository->getTaskById($taskId);
+            if (!$task) {
+                return response()->json([
+                    "success" => false,
+                    "message" => "Task with the given ID not found"
+                ], 404);
+            }
+
+            $validatedData = $request->validate([
+                "status" => ["required", "string", "in:pending,in progress,completed,overdue"]
+            ]);
+
+
+            $updatedTask = $this->taskRepository->updateTask($taskId, $validatedData);
+
+            return response()->json([
+                "success" => true,
+                "message" => "Task status updated successfully",
+                "data" => $updatedTask->status
+            ]);
+
+        } catch (Exception $exception) {
+            return response()->json(["success" => false, "message" => $exception->getMessage()], 500);
+        }
+    }
+
+
     public function update(Request $request, string $id)
     {
         try {
@@ -122,27 +217,24 @@ class TaskController extends Controller
                 "name" => ["sometimes", "string", "max:255"],
                 "description" => ["sometimes", "string"],
                 "start_date" => ["sometimes", "date"],
-                "assignee" => ["sometimes", "string"],
                 "end_date" => ["sometimes", "date"],
-                "status" => ["sometimes", "string", "in:pending,in progress,completed,overdue"]
             ]);
 
-            $task = $this->taskRepository->updateTask($id, $validatedData);
-
-
-            if(!$task){
+            $task = $this->taskRepository->getTaskById($id);
+            if (!$task) {
                 return response()->json([
                     "success" => false,
-                    "message" => "Task with given id not found"
+                    "message" => "Task with the given ID not found"
                 ], 404);
             }
+
+            $updatedTask = $this->taskRepository->updateTask($id, $validatedData);
 
             return response()->json([
                 "success" => true,
                 "message" => "Task updated successfully",
-                "data" => $task
+                "data" => $updatedTask
             ]);
-
 
         } catch (Exception $exception) {
             return response()->json(["success" => false, "message" => $exception->getMessage()], 500);
@@ -173,7 +265,7 @@ class TaskController extends Controller
             return response()->json(["success" => false, "message" => $exception->getMessage()], 500);
         }
     }
-    
+
 
 
 }

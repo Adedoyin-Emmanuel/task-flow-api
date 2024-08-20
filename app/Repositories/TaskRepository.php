@@ -82,4 +82,9 @@ class TaskRepository
 
         return $query->get();
     }
+
+    public function getUserProjectTasks(string $userId, string $projectId)
+    {
+        return Task::where('assignee', $userId)->where('project_id', $projectId)->get();
+    }
 }

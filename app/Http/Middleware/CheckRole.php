@@ -60,6 +60,8 @@ class CheckRole
             ], 403);
         }
 
+        $request->session()->put('role', $user->role);
+
         return $next($request);
     }
 }

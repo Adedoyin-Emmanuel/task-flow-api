@@ -42,8 +42,6 @@ class CheckAuth
         }
 
 
-        Log::info('CheckAuth passed');
-
         return $next($request);
     }
 }
