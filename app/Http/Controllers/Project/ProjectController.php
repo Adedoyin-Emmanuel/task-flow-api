@@ -65,6 +65,15 @@ class ProjectController extends Controller
 
             $project = $this->projectRepository->getProjectById($id);
 
+
+            if(!$project){
+                return response()->json([
+                    "success" => false,
+                    "message" => "Project with given id not found",
+                    "data" => null
+                ], 404);
+            }
+
             return response()->json([
                 "success" => true,
                 "message" => "Project retrived successfully",
@@ -104,7 +113,6 @@ class ProjectController extends Controller
 
     public function delete(Request $request, string $id)
     {
-
           try {
 
             $this->projectRepository->deleteProject($id);

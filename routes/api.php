@@ -6,10 +6,6 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Project\ProjectController;
 
-use App\Http\Middleware\CheckAuth;
-use App\Http\Middleware\CheckRole;
-use App\Models\Project;
-
 Route::get("/", function () {
     return response()->json([
         "success" => true,
@@ -27,11 +23,11 @@ Route::group(['prefix' => 'auth'], function () {
 
 
 Route::group(['prefix' => 'project', 'middleware' => ['auth']], function () {
-    Route::post('/', [ProjectController::class, 'create'])->middleware('role:admin,user');
+    Route::post('/', [ProjectController::class, 'create'])->middleware('role:admin');
     Route::get('/', [ProjectController::class, 'getAll']);
     Route::get('/{id}', [ProjectController::class, 'getById']);
-    Route::put('/{id}', [ProjectController::class, 'update']);
-    Route::delete('/{id}', [ProjectController::class, 'delete']);
+    Route::put('/{id}', [ProjectController::class, 'update'])->middleware('role:admin,project manager');
+    Route::delete('/{id}', [ProjectController::class, 'delete'])->middleware('role:admin');
 });
 
 
