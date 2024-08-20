@@ -88,4 +88,15 @@ class TaskRepository
     {
         return Task::where('assignee', $userId)->where('project_id', $projectId)->get();
     }
+
+    public function getNearingDeadlineTasks()
+    {
+        $now = new \DateTimeDateTime();
+        $twoDaysFromNow = $now->modify('+2 days')->format('Y-m-d');
+
+        return Task::where('end_date', '<=', $twoDaysFromNow)
+                    ->where('status', '!=', 'completed')
+                    ->get();
+    }
+
 }
