@@ -60,10 +60,10 @@ class DashboardController extends Controller
     }
 
 
-    public function overDueTasks(Request $request)
+    public function overdueTasks(Request $request)
     {
        try {
-        
+
             $status = $request->query("status", null);
             $overdueTasks = $this->taskRepository->getOverdueTasks($status);
 

@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\VerifyEmailController;
-use App\Http\Controllers\Project\ProjectController;
 use App\Http\Controllers\Task\TaskController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Project\ProjectController;
+use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Dashboard\DashboardController;
 
 Route::get("/", function () {
     return response()->json([
@@ -40,4 +41,9 @@ Route::group(['prefix' => 'task', 'middleware' => ['auth']], function(){
     Route::delete('/{id}', [TaskController::class, 'delete'])->middleware('role:project manager,admin');
 });
 
+
+Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
+    Route::get('/overview', [DashboardController::class, 'overview']);
+    Route::get('/overdue', [DashboardController::class, 'overdueTasks']);
+});
 
