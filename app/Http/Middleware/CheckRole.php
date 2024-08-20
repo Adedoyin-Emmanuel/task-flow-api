@@ -11,11 +11,11 @@ use App\Repositories\UserRepository;
 
 class CheckRole
 {
-
     protected $tokenRepository;
     protected $userRepository;
 
-    public function __construct(TokenRepository $tokenRepository, UserRepository $userRepository){
+    public function __construct(TokenRepository $tokenRepository, UserRepository $userRepository)
+    {
         $this->tokenRepository = $tokenRepository;
         $this->userRepository = $userRepository;
     }
@@ -23,28 +23,40 @@ class CheckRole
     /**
      * Handle an incoming request.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  string|array  $roles
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
-
         $token = $request->cookie("auth_token");
 
         $dbToken = $this->tokenRepository->findToken($token);
 
-        $userId = $dbToken->user_id;
+        if (!$dbToken) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized. Invalid token.',
+            ], 401);
+        }
 
+        $userId = $dbToken->user_id;
         $user = $this->userRepository->findUser($userId);
 
-        Log::info($user);
-
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found.',
+            ], 404);
+        }
 
         Log::info($user->role);
 
-        if($user->role !== $role){
+        if (!in_array($user->role, $roles)) {
             return response()->json([
                 'success' => false,
-                'message' => 'Access denied. Insufficient permission'
+                'message' => 'Access denied. Insufficient permission.',
             ], 403);
         }
 

@@ -27,7 +27,6 @@ class ProjectController extends Controller
                 "status" => ["nullable", "string", "in:pending,in progress,completed,overdue"]
             ]);
 
-            // Pass the validated data to the repository to create the project
             $project = $this->projectRepository->createProject($validatedData);
 
             return response()->json([
