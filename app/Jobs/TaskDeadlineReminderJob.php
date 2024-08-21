@@ -21,14 +21,18 @@ class TaskDeadlineReminderJob
     public function handle()
     {
         Schedule::call(function () {
-            $overdueTasks = $this->taskRepository->getOverdueTasks();
+            $tasksNearingDeadline = $this->taskRepository->getNearingDeadlineTasks();
 
-            foreach ($overdueTasks as $task) {
+            if ($tasksNearingDeadline->isEmpty()) {
+                return;
+            }
+
+            foreach ($tasksNearingDeadline as $task) {
 
                 $user = $this->userRepository->getUser($task->user_id);
 
                 Mail::to($user->email)->send(new TaskDeadlineReminder($task));
             }
-        })->daily();
+        })->wednesdays(); // Let's say Friday is usually standup meettinng
     }
 }
