@@ -1,11 +1,13 @@
 # Task Flow API
 
 See POSTMAN API Documentation [View Documentation](https://documenter.getpostman.com/view/25154969/2sA3sAi8Jd)
+
 Based on this [Case Study](./md-assets/case-study.pdf)
 
 ## Overview
 
-This is a RESTful API for managing tasks within a project. It allows users to create, update, and manage tasks, assign tasks to users, send email notifications, and more.
+This is a RESTful API for managing tasks
+within a project. It allows users to create, update, and manage tasks, assign tasks to users, send email notifications, and more.
 
 ### Features
 
