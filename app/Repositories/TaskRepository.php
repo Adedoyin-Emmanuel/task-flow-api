@@ -91,7 +91,7 @@ class TaskRepository
 
     public function getNearingDeadlineTasks()
     {
-        $now = new \DateTimeDateTime();
+        $now = new \DateTime();
         $twoDaysFromNow = $now->modify('+2 days')->format('Y-m-d');
 
         return Task::where('end_date', '<=', $twoDaysFromNow)

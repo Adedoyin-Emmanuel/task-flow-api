@@ -1,10 +1,11 @@
 <?php
 
+namespace App\Jobs;
+use App\Mail\TaskDeadlineReminder;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use App\Repositories\TaskRepository;
 use App\Repositories\UserRepository;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Schedule;
-use App\Mail\TaskDeadlineReminder;
 
 
 class TaskDeadlineReminderJob
@@ -20,19 +21,18 @@ class TaskDeadlineReminderJob
     }
     public function handle()
     {
-        Schedule::call(function () {
-            $tasksNearingDeadline = $this->taskRepository->getNearingDeadlineTasks();
+        $tasksNearingDeadline = $this->taskRepository->getNearingDeadlineTasks();
 
-            if ($tasksNearingDeadline->isEmpty()) {
-                return;
-            }
+        if ($tasksNearingDeadline->isEmpty()) {
+            Log::info("No Task nearing deadline found!");
+            return;
+        }
 
-            foreach ($tasksNearingDeadline as $task) {
+        foreach ($tasksNearingDeadline as $task) {
 
-                $user = $this->userRepository->getUser($task->user_id);
+            $user = $this->userRepository->getUser($task->assignee);
 
-                Mail::to($user->email)->send(new TaskDeadlineReminder($task));
-            }
-        })->wednesdays(); // Let's say Friday is usually standup meettinng
+            Mail::to($user->email)->send(new TaskDeadlineReminder($task, $user));
+        }
     }
 }

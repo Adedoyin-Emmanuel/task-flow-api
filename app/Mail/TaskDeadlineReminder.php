@@ -13,16 +13,19 @@ class TaskDeadlineReminder extends Mailable
     public $task;
     public $message;
 
+    public $user;
+
     /**
      * Create a new message instance.
      *
      * @param $task
      * @param string $message
      */
-    public function __construct($task, string $message = 'Task Deadline Reminder')
+    public function __construct($task, $user, string $message = 'Task Deadline Reminder')
     {
         $this->task = $task;
         $this->message = $message;
+        $this->user = $user;
     }
 
     /**
@@ -36,6 +39,7 @@ class TaskDeadlineReminder extends Mailable
                     ->view('emails.task-deadline-reminder')
                     ->with([
                         'task' => $this->task,
+                        'user' => $this->user
                     ]);
     }
 }

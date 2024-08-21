@@ -1,9 +1,10 @@
 <?php
 
+namespace App\Jobs;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use App\Repositories\TaskRepository;
 use App\Repositories\UserRepository;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Schedule;
 use App\Mail\TaskOverdueNotification;
 
 
@@ -18,21 +19,21 @@ class TaskOverdueNotificationJob
         $this->taskRepository = $taskRepository;
         $this->userRepository = $userRepository;
     }
+
     public function handle()
     {
-        Schedule::call(function () {
-            $overdueTasks = $this->taskRepository->getOverdueTasks();
+        $overdueTasks = $this->taskRepository->getOverdueTasks();
 
-            if($overdueTasks->isEmpty()){
-                return;
-            }
+        if ($overdueTasks->isEmpty()) {
+            Log::info("No Overdue tasks were found!");
+            return;
+        }
 
-            foreach ($overdueTasks as $task) {
 
-                $user = $this->userRepository->getUser($task->user_id);
+        foreach ($overdueTasks as $task) {
+            $user = $this->userRepository->getUser($task->assignee);
 
-                Mail::to($user->email)->send(new TaskOverdueNotification($task));
-            }
-        })->daily();
+            Mail::to($user->email)->send(new TaskOverdueNotification($task, $user));
+        }
     }
 }
