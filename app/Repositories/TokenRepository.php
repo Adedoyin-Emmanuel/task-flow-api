@@ -69,6 +69,16 @@ class TokenRepository{
             throw $exception;
         }
     }
+
+
+    public function deleteAuthToken()
+    {
+        try {
+            return Token::where(['type' => 'auth_token'])->delete();
+        } catch (Exception $exception) {
+            throw $exception;
+        }
+    }
 }
 
 
