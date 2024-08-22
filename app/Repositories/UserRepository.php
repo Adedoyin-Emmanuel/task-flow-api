@@ -18,4 +18,14 @@ class UserRepository
             throw $exception;
         }
     }
+
+
+    public function getAllProjectManagers()
+    {
+        try {
+            return User::where('role', 'project manager')->get();
+        } catch (Exception $exception) {
+            throw $exception;
+        }
+    }
 }

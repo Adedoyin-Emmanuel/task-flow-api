@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Project;
+use App\Models\Task;
 use Exception;
 
 class ProjectRepository
@@ -26,6 +27,7 @@ class ProjectRepository
             "start_date" => $data["start_date"],
             "end_date" => $data["end_date"],
             "status" => $data["status"] ?? 'pending',
+            "project_manager_id" => $data["project_manager_id"]
         ]);
 
         return $project;
@@ -60,5 +62,21 @@ class ProjectRepository
 
     public function deleteProject(string $id){
         Project::destroy($id);
+    }
+
+
+    public function getAllProjectByUserId(string $userId, string $role)
+    {
+        if($role == "project manager"){
+            return Project::where('project_manager_id', $userId)->get();
+        }else{
+            $taskIds = Task::where('user_id', $userId)->pluck('id');
+
+            $projectIds = Task::whereIn('id', $taskIds)->pluck('project_id')->unique();
+
+            $projects = Project::whereIn('id', $projectIds)->get();
+
+            return $projects;
+        }
     }
 }

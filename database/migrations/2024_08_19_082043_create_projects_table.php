@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text("description");
             $table->date("start_date");
             $table->date("end_date");
+            $table->foreignUuid("project_manager_id")->constrained("users")->onDelete("set null");
             $table->enum("status", ["pending", "in progress", "completed", "overdue"])->default("pending");
             $table->timestamps();
         });

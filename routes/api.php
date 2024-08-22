@@ -9,6 +9,7 @@ use App\Http\Controllers\Report\ReportController;
 use App\Http\Controllers\Project\ProjectController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\User\UserController;
 
 Route::get('/', function () {
     return response()->json([
@@ -57,4 +58,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], function () {
 Route::group(['prefix' => 'report'], function () {
     Route::get('/project/{projectId}', [ReportController::class, 'generateProjectReport']);
     Route::get('/all-projects', [ReportController::class, 'generateAllProjectsReport']);
+});
+
+
+Route::group(['prefix' => 'user', 'middleware' => ['auth']], function () {
+    Route::get('/project-managers', [UserController::class, 'getProjectManagers']);
 });

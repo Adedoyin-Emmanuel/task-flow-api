@@ -65,8 +65,12 @@ class TaskController extends Controller
                 "assignee" => ["required", "string"],
                 "project_id" => ["required", "string"],
                 "end_date" => ["required", "date"],
-                "status" => ["nullable", "string", "in:pending,in progress,completed,overdue"]
+                "status" => ["nullable", "string", "in:pending,in progress,completed,overdue"],
             ]);
+
+
+
+
 
 
             $task = $this->taskRepository->createTask($validatedData);

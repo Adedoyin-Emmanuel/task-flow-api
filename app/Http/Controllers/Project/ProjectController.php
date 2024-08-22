@@ -24,7 +24,8 @@ class ProjectController extends Controller
                 "description" => ["required", "string"],
                 "start_date" => ["required", "date"],
                 "end_date" => ["required", "date"],
-                "status" => ["nullable", "string", "in:pending,in progress,completed,overdue"]
+                "status" => ["nullable", "string", "in:pending,in progress,completed,overdue"],
+                "project_manager_id" => ["required", "string", "exists:users,id"]
             ]);
 
             $project = $this->projectRepository->createProject($validatedData);

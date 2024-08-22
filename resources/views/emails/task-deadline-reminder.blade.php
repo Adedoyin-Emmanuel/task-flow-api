@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Task Deadline Reminder</title>
-</head>
+</head>w
 <body>
     <h1>Reminder: Task Deadline Approaching</h1>
     <p>Dear {{ $user->name }},</p>

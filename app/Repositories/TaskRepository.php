@@ -21,15 +21,19 @@ class TaskRepository
             throw new Exception('End date must be after start date.');
         }
 
-        $task = Task::create([
-            "name" => $data["name"],
-            "description" => $data["description"],
-            "start_date" => $data["start_date"],
-            "end_date" => $data["end_date"],
-            "project_id" => $data["project_id"],
-            "assignee" => $data["assignee"],
-            "status" => $data["status"] ?? 'pending',
-        ]);
+
+
+
+    $task = Task::create([
+        "name" => $data["name"],
+        "description" => $data["description"],
+        "start_date" => $data["start_date"],
+        "end_date" => $data["end_date"],
+        "project_id" => $data["project_id"],
+        "assignee" => $data["assignee"],
+        "status" => $data["status"] ?? 'pending',
+    ]);
+
 
         return $task;
     }
